@@ -27,3 +27,7 @@ class RelationshipInline(admin.TabularInline):
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     inlines = [RelationshipInline]
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['id','name']
