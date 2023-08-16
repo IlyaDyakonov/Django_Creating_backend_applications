@@ -2,7 +2,7 @@
 # TODO: ListCreateAPIView, RetrieveUpdateAPIView, CreateAPIView
 from rest_framework import generics
 from .models import  Sensor, Measurement
-from .serializers import MeasurementSerializer, SensorDetailSerializer
+from .serializers import MeasurementSerializer, SensorDetailSerializer, MeasurementSerializerCreate
 
 
 class SensorListCreateView(generics.ListCreateAPIView):
@@ -27,7 +27,7 @@ class TemperatureMeasurementListCreateView(generics.ListCreateAPIView):
 
 class SensorTemperatureMeasurementListCreateView(generics.ListCreateAPIView):
     """Создание и просмотр списка изменений температуры для конкретного датчика"""
-    serializer_class = MeasurementSerializer
+    serializer_class = MeasurementSerializerCreate
 
     def get_queryset(self):
         sensor_pk = self.kwargs.get('sensor_pk')
