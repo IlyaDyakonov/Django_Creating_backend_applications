@@ -31,7 +31,7 @@ Authorization: Token bac60edfd72f58d13c8d0ccc6ddd8dd8e3e3113b
 
 ###
 
-# 
+# попытка удалить объявление
 DELETE {{baseUrl}}/advertisements/10/
 Content-Type: application/json
 Authorization: Token bac60edfd72f58d13c8d0ccc6ddd8dd8e3e3113b
