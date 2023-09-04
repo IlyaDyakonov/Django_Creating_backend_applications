@@ -40,6 +40,8 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
         user = self.context["request"].user
         open_ads_count = Advertisement.objects.filter(creator=user, status=AdvertisementStatusChoices.OPEN).count()
+        if self.instance and self.instance.status == AdvertisementStatusChoices.OPEN:
+            open_ads_count -= 1
         if open_ads_count >= 10:
             raise serializers.ValidationError("Превышено максимальное количество открытых объявлений (10).")
         return data
