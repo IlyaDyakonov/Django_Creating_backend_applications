@@ -53,16 +53,21 @@ def test_list_course(api_client, course_factory):
 # Тест 3. проверка фильтрации списка курсов по id
 # Тест 4. проверка фильтрации списка курсов по name
 @pytest.mark.django_db
-def test_filter_course_id(api_client, course_factory):
-    courses = course_factory(_quantity=5)
-    response = api_client.get(f"/api/v1/courses/")
-    course_filter = courses[1]
+@pytest.mark.parametrize('filter_param, filter_value', [
+    ('id', 1),
+    ('name', 'New Course')
+])
+def test_filter_course_id(api_client, course_factory, filter_param, filter_value):
+    course_factory(id=1, name='New Course')
+    response = api_client.get(f"/api/v1/courses/?{filter_param}={filter_value}")
     assert response.status_code == 200
-    assert len(response.data) == 5
-    filtered_courses = [course for course in response.data if course['id'] == course_filter.id]
+    filtered_courses = response.json()
     assert len(filtered_courses) == 1
-    assert response.data[1]['id'] == course_filter.id
-    assert response.data[1]['name'] == course_filter.name
+    filtered_course = filtered_courses[0]
+    if filter_param == 'id':
+        assert filtered_course['id'] == 1
+    if filter_param == 'name':
+        assert filtered_course['name'] == 'New Course'
 
 
 # Тест 5. тест успешного создания курса
@@ -92,6 +97,7 @@ def test_update_course(api_client, course_factory):
     update_json = response.json()
     assert 'id' in update_json
     assert update_json['name'] == course_update['name']
+
 
 # Тест 7. тест успешного удаления курса.
 @pytest.mark.django_db
